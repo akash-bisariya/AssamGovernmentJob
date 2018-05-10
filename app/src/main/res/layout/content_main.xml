@@ -5,12 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.assamgovernmentjob.MainActivity"
+    tools:context="com.assamgovernmentjob.home.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:listitem="@layout/home_row_layout"
         android:id="@+id/rv_home"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        android:visibility="gone"
+        android:id="@+id/pb_progress"/>
 
 </android.support.constraint.ConstraintLayout>
