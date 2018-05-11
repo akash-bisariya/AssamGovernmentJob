@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".home.MainActivity"
+    app:cardBackgroundColor="@color/cardview_light_background"
     app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
@@ -26,6 +27,8 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/s_5dp"
             android:text="Test Link"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@id/iv_image"
             app:layout_constraintStart_toEndOf="@+id/iv_image" />
