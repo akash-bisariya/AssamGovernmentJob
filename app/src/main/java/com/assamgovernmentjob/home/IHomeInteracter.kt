@@ -1,14 +1,15 @@
 package com.assamgovernmentjob.home
 
+import okhttp3.ResponseBody
 import retrofit2.Response
 
 /**
  * Created by akash bisariya on 10-05-2018.
  */
-interface IHomeInteractor {
-    fun requestNewsDataAPI(onFinishedListener: OnFinishedListener)
+interface IHomeInteracter {
+    fun requestNewsDataAPI(onFinishedListener: OnFinishedListener,category: Int)
     interface OnFinishedListener {
-        fun onResultSuccess(arrNewsUpdates: List<Response<Any>>)
+        fun onResultSuccess(categoryModel: CategoryModel?)
         fun onResultFail(strError: String)
     }
 }

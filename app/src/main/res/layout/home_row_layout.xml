@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".home.MainActivity"
+    android:padding="@dimen/s_10dp"
     app:cardBackgroundColor="@color/cardview_light_background"
     app:cardUseCompatPadding="true">
 
@@ -17,7 +18,10 @@
             android:layout_width="@dimen/s_image_60dp"
             android:layout_height="60dp"
             android:src="@drawable/assam_government_job"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_url"
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="ContentDescription" />
 
@@ -25,25 +29,25 @@
             android:id="@+id/tv_url"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="@dimen/s_5dp"
-            android:text="Test Link"
-            android:textStyle="bold"
+            android:paddingLeft="@dimen/s_10dp"
+            android:paddingRight="@dimen/s_10dp"
             android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/iv_image"
-            app:layout_constraintStart_toEndOf="@+id/iv_image" />
+            android:textSize="@dimen/txt_size_18sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/iv_image" />
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_date_range_grey_600_24dp"
-            android:drawablePadding="@dimen/s_5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="Date"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/s_10dp"
+            android:textSize="@dimen/txt_size_15sp"
+            android:paddingLeft="@dimen/s_10dp"
+            android:paddingRight="@dimen/s_10dp"
             app:layout_constraintLeft_toRightOf="@id/iv_image"
-            app:layout_constraintStart_toEndOf="@+id/iv_image"
-            app:layout_constraintTop_toBottomOf="@id/tv_url" />
+            app:layout_constraintTop_toBottomOf="@id/tv_url"
+            android:drawableStart="@drawable/ic_date_range_grey_600_24dp" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

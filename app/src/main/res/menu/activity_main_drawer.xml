@@ -11,17 +11,21 @@
         <item android:title="Categories">
             <menu>
                 <item
-                    android:id="@+id/nav_assam_government_job"
-                    android:icon="@drawable/ic_description_grey_600_24dp"
-                    android:title="Assam Government Job" />
-                <item
                     android:id="@+id/nav_all_india_job"
                     android:icon="@drawable/ic_description_grey_600_24dp"
                     android:title="All India Jobs" />
                 <item
+                    android:id="@+id/nav_latest_admit_card"
+                    android:icon="@drawable/ic_description_grey_600_24dp"
+                    android:title="Admit Card" />
+                <item
                     android:id="@+id/nav_answer_key"
                     android:icon="@drawable/ic_description_grey_600_24dp"
                     android:title="Answer Key" />
+                <item
+                    android:id="@+id/nav_latest_jobs"
+                    android:icon="@drawable/ic_description_grey_600_24dp"
+                    android:title="Latest Jobs" />
                 <item
                     android:id="@+id/nav_latest_result"
                     android:icon="@drawable/ic_description_grey_600_24dp"
