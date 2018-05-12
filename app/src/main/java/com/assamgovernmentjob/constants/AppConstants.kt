@@ -1,4 +1,4 @@
-package com.assamgovernmentjob.home.constants
+package com.assamgovernmentjob.constants
 
 /**
  * Created by akash

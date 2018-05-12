@@ -7,7 +7,7 @@ import retrofit2.Response
  * Created by akash bisariya on 10-05-2018.
  */
 interface IHomeInteracter {
-    fun requestNewsDataAPI(onFinishedListener: OnFinishedListener,category: Int)
+    fun requestDataAPI(onFinishedListener: OnFinishedListener, category: Int)
     interface OnFinishedListener {
         fun onResultSuccess(categoryModel: CategoryModel?)
         fun onResultFail(strError: String)

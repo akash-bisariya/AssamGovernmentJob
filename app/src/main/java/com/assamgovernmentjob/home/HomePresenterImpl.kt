@@ -17,7 +17,7 @@ class HomePresenterImpl(var homeView: IHomeView?,var homeInteractor: IHomeIntera
     override fun getHomeData(category: Int) {
         homeView.let {
             homeView!!.showProgress()
-            homeInteractor.requestNewsDataAPI(this,category)
+            homeInteractor.requestDataAPI(this,category)
         }
     }
 

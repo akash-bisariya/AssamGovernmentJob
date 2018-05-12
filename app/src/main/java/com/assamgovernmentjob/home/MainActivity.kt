@@ -9,11 +9,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import com.assamgovernmentjob.R
-import com.assamgovernmentjob.home.constants.AppConstants
+import com.assamgovernmentjob.constants.AppConstants
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import okhttp3.ResponseBody
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener , IHomeView , IOnRecycleItemClick{
     override fun onRecycleItemClick(view: View?, position: Int) {
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-
+                homePresenterImpl.getHomeData(0)
             }
             R.id.nav_latest_jobs -> {
                 homePresenterImpl.getHomeData(AppConstants.Latest_Jobs)

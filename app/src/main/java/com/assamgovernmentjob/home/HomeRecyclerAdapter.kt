@@ -14,7 +14,7 @@ import com.assamgovernmentjob.R
  */
 class HomeRecyclerAdapter(private val context: Context, private val categoryModel: CategoryModel?, val onItemClick: IOnRecycleItemClick) : RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.viewHolderBind(context, categoryModel!!.userData.catData.post_content[position], onItemClick)
+        holder.viewHolderBind(context, categoryModel as CategoryModel, onItemClick)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,10 +34,10 @@ class HomeRecyclerAdapter(private val context: Context, private val categoryMode
             onItemClick.onRecycleItemClick(view, adapterPosition)
         }
 
-        fun viewHolderBind( context: Context, categoryModel: PostContent, listener: IOnRecycleItemClick) {
+        fun viewHolderBind( context: Context, categoryModel: CategoryModel, listener: IOnRecycleItemClick) {
             onItemClick = listener
-            tvUrl.text = categoryModel.str
-            tvDate.text = categoryModel.href
+            tvUrl.text = categoryModel.userData.catData.post_content[adapterPosition].str
+            tvDate.text = categoryModel.userData.catData.post_date
             itemView.setOnClickListener(this)
         }
     }
