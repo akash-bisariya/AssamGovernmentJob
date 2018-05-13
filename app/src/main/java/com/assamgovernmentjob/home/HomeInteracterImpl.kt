@@ -35,7 +35,7 @@ class HomeInteracterImpl : IHomeInteracter {
                         }
 
                         override fun onResponse(call: Call<CategoryModel>?, response: Response<CategoryModel>?) {
-                            onFinishedListener.onResultSuccess(response!!.body())
+                            onFinishedListener.onResultSuccess(response!!.body() as CategoryModel)
                         }
 
                     })
@@ -53,8 +53,7 @@ class HomeInteracterImpl : IHomeInteracter {
                         }
 
                         override fun onResponse(call: Call<HomeModel>?, response: Response<HomeModel>?) {
-//                            onFinishedListener.onResultSuccess(response as CategoryModel)
-                            Log.d("","")
+                            onFinishedListener.onResultSuccess(response!!.body() as HomeModel)
                         }
 
                     })

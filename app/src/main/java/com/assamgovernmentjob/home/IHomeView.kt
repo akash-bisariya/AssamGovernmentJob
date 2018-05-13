@@ -10,5 +10,6 @@ interface IHomeView  {
     fun showProgress()
     fun hideProgress()
     fun setHomeData(categoryModel:CategoryModel?)
+    fun setHomeData(homeModel: HomeModel?)
     fun getDataFailed()
 }

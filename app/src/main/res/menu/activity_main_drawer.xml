@@ -10,6 +10,7 @@
             android:title="Home" />
         <item android:title="Categories">
             <menu>
+                <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_all_india_job"
                     android:icon="@drawable/ic_description_grey_600_24dp"
@@ -38,6 +39,7 @@
                     android:id="@+id/nav_important"
                     android:icon="@drawable/ic_description_grey_600_24dp"
                     android:title="Important" />
+                </group>
             </menu>
         </item>
     </group>

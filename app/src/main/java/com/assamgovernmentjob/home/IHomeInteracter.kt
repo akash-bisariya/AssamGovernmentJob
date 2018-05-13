@@ -10,6 +10,7 @@ interface IHomeInteracter {
     fun requestDataAPI(onFinishedListener: OnFinishedListener, category: Int)
     interface OnFinishedListener {
         fun onResultSuccess(categoryModel: CategoryModel?)
+        fun onResultSuccess(homeModel: HomeModel?)
         fun onResultFail(strError: String)
     }
 }

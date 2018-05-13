@@ -4,6 +4,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.net.NetworkInfo
+import android.content.Context.CONNECTIVITY_SERVICE
+import android.net.ConnectivityManager
+
+
 
 /**
  * Created by akash

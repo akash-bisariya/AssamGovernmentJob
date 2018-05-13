@@ -14,11 +14,23 @@ class HomePresenterImpl(var homeView: IHomeView?,var homeInteractor: IHomeIntera
         homeView!!.setHomeData(categoryModel)
     }
 
-    override fun getHomeData(category: Int) {
+    override fun getHomeCategoryData(category: Int) {
         homeView.let {
             homeView!!.showProgress()
             homeInteractor.requestDataAPI(this,category)
         }
+    }
+
+    override fun getHomeData() {
+        homeView.let {
+            homeView!!.showProgress()
+            homeInteractor.requestDataAPI(this,0)
+        }
+    }
+
+    override fun onResultSuccess(homeModel: HomeModel?) {
+        homeView!!.hideProgress()
+        homeView!!.setHomeData(homeModel)
     }
 
     override fun onDestroy() {

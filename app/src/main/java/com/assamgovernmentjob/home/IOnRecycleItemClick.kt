@@ -8,5 +8,5 @@ import android.view.View
  * on 27/2/18.
  */
 interface IOnRecycleItemClick {
-    fun onRecycleItemClick(view: View?, position:Int)
+    fun onRecycleItemClick(view: View?, position:Int , isCategory:Boolean)
 }

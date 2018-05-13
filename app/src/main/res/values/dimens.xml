@@ -10,4 +10,5 @@
     <dimen name="txt_size_18sp">18sp</dimen>
     <dimen name="s_image_60dp">60dp</dimen>
     <dimen name="txt_size_15sp">15sp</dimen>
+    <dimen name="s_margin_20dp">20dp</dimen>
 </resources>

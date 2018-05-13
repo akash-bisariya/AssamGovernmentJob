@@ -11,32 +11,32 @@ import com.assamgovernmentjob.R
 /**
  * Created by akash bisariya on 13-02-2018.
  */
-class HomeRecyclerAdapter(private val context: Context, private val homeModel: HomeModel?, private val onItemClick: IOnRecycleItemClick) : RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder>() {
+class HomeCategoryRecyclerAdapter(private val context: Context, private val categoryModel: CategoryModel?, private val onItemClick: IOnRecycleItemClick) : RecyclerView.Adapter<HomeCategoryRecyclerAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.viewHolderBind(context, homeModel as HomeModel, onItemClick)
+        holder.viewHolderBind(context, categoryModel as CategoryModel, onItemClick)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.home_row_layout, parent, false)
-        (view.findViewById(R.id.tv_date) as TextView).visibility = View.GONE
         return ViewHolder(view, onItemClick)
     }
 
     override fun getItemCount(): Int {
-        return if (homeModel!!.homeData.links.isNotEmpty()) homeModel.homeData.links.size else 0
+        return if (categoryModel!!.userData.catData.post_content.size > 0) categoryModel.userData.catData.post_content.size else 0
     }
 
     class ViewHolder(itemView: View?, private var onItemClick: IOnRecycleItemClick) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val tvUrl = itemView!!.findViewById(R.id.tv_url) as TextView
-//        private val tvDate = itemView!!.findViewById(R.id.tv_date) as TextView
+        private val tvDate = itemView!!.findViewById(R.id.tv_date) as TextView
+
         override fun onClick(view: View?) {
-            onItemClick.onRecycleItemClick(view, adapterPosition,false)
+            onItemClick.onRecycleItemClick(view, adapterPosition,true)
         }
 
-        fun viewHolderBind( context: Context, homeModel: HomeModel?, listener: IOnRecycleItemClick) {
+        fun viewHolderBind( context: Context, categoryModel: CategoryModel, listener: IOnRecycleItemClick) {
             onItemClick = listener
-            tvUrl.text = homeModel!!.homeData.links[adapterPosition].str
-//            tvDate.text = ""
+            tvUrl.text = categoryModel.userData.catData.post_content[adapterPosition].str
+            tvDate.text = categoryModel.userData.catData.post_date
             itemView.setOnClickListener(this)
         }
     }
