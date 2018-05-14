@@ -1,5 +1,6 @@
 package com.assamgovernmentjob.home
 
+import android.content.SharedPreferences
 import android.os.Build
 import android.util.ArrayMap
 import android.util.Log
@@ -23,7 +24,12 @@ class HomeInteracterImpl : IHomeInteracter {
     override fun requestDataAPI(onFinishedListener: IHomeInteracter.OnFinishedListener, category: Int) {
         val retrofit: Retrofit = ApiClient.getClient()
         val arrayMap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) ArrayMap<String, String>() else HashMap<String, String>()
-        if(category==0) arrayMap["data"]="all" else arrayMap["category_id"] = category.toString()
+        if(category==0) {
+            arrayMap["data"] = "all"
+            arrayMap["DeviceToken"]=""
+            arrayMap["DeviceId"]=""
+        }
+        else arrayMap["category_id"] = category.toString()
         arrayMap["key"] = Service_Key
         if(category!=0) {
             val response = retrofit.create(ApiService::class.java).getCategoryLink(arrayMap)

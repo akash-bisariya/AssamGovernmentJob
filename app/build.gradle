@@ -12,6 +12,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -39,7 +40,10 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:2.4.0"
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.21'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.19.3'
+    implementation 'com.google.firebase:firebase-messaging:15.0.2'
+    implementation 'com.google.firebase:firebase-core:15.0.2'
 }
+apply plugin: 'com.google.gms.google-services'
 kotlin {
     experimental {
         coroutines "enable"

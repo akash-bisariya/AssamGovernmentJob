@@ -1,7 +1,9 @@
 package com.assamgovernmentjob.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -15,6 +17,9 @@ import com.assamgovernmentjob.webPage.WebActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import android.provider.Settings.Secure
+
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IHomeView, IOnRecycleItemClick {
     lateinit var categoryModelData: CategoryModel
@@ -69,6 +74,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
         onNavigationItemSelected(nav_view.menu.getItem(0))
+        val androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        val sharedPreferences = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("deviceId", androidId)
+        editor.apply()
 
 
     }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "503434812907",
+    "firebase_url": "https://assamgovernmentjobs.firebaseio.com",
+    "project_id": "assamgovernmentjobs",
+    "storage_bucket": "assamgovernmentjobs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:503434812907:android:52d15040431b2dbb",
+        "android_client_info": {
+          "package_name": "com.assamgovernmentjob"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "503434812907-sdarkae4ul86sko4bhit674pm6ge920n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw6Lm3jNsoQmHmiQolIFkz2kfFyczF0TA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
