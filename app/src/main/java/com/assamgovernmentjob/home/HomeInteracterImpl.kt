@@ -20,14 +20,14 @@ import java.util.logging.Logger
 /**
  * Created by akash bisariya on 11-05-2018.
  */
-class HomeInteracterImpl : IHomeInteracter {
-    override fun requestDataAPI(onFinishedListener: IHomeInteracter.OnFinishedListener, category: Int) {
+class HomeInteracterImpl(val presenter: HomePresenterImpl) : IHomeInteracter {
+    override fun requestDataAPI(category: Int,deviceId:String,token:String) {
         val retrofit: Retrofit = ApiClient.getClient()
         val arrayMap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) ArrayMap<String, String>() else HashMap<String, String>()
         if(category==0) {
             arrayMap["data"] = "all"
-            arrayMap["DeviceToken"]=""
-            arrayMap["DeviceId"]=""
+            arrayMap["DeviceToken"]=token
+            arrayMap["DeviceId"]=deviceId
         }
         else arrayMap["category_id"] = category.toString()
         arrayMap["key"] = Service_Key
@@ -37,13 +37,12 @@ class HomeInteracterImpl : IHomeInteracter {
                 launch(UI) {
                     response.enqueue(object : Callback<CategoryModel> {
                         override fun onFailure(call: Call<CategoryModel>?, t: Throwable?) {
-                            onFinishedListener.onResultFail(t.toString())
+                            presenter.onResultFail(t.toString())
                         }
 
                         override fun onResponse(call: Call<CategoryModel>?, response: Response<CategoryModel>?) {
-                            onFinishedListener.onResultSuccess(response!!.body() as CategoryModel)
+                            presenter.onResultSuccess(response!!.body() as CategoryModel)
                         }
-
                     })
                 }
             }
@@ -55,11 +54,11 @@ class HomeInteracterImpl : IHomeInteracter {
                 launch(UI) {
                     response.enqueue(object : Callback<HomeModel> {
                         override fun onFailure(call: Call<HomeModel>?, t: Throwable?) {
-                            onFinishedListener.onResultFail(t.toString())
+                            presenter.onResultFail(t.toString())
                         }
 
                         override fun onResponse(call: Call<HomeModel>?, response: Response<HomeModel>?) {
-                            onFinishedListener.onResultSuccess(response!!.body() as HomeModel)
+                            presenter.onResultSuccess(response!!.body() as HomeModel)
                         }
 
                     })
@@ -67,4 +66,5 @@ class HomeInteracterImpl : IHomeInteracter {
             }
         }
     }
+
 }

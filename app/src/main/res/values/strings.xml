@@ -10,4 +10,20 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="txt_retry">Retry</string>
+    <string name="txt_share">Share</string>
+    <string name="txt_important">Important</string>
+    <string name="txt_syllabus">Syllabus</string>
+    <string name="txt_latest_result">Latest Result</string>
+    <string name="txt_answer_key">Answer Key</string>
+    <string name="txt_all_india_jobs">All India Jobs</string>
+    <string name="txt_admit_card">Admit Card</string>
+    <string name="txt_assam_government_jobs">Assam Government Jobs</string>
+    <string name="txt_communicate">Communicate</string>
+    <string name="txt_home">Home</string>
+    <string name="txt_categories">Categories</string>
+    <string name="admob_app_id">ca-app-pub-4528635502203774~8446326614</string>
+    <string name="txt_banner_ad_unit_id">ca-app-pub-4528635502203774/6988461639</string>
+    <!--<string name="txt_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <string name="txt_interstitial_ad_id">ca-app-pub-4528635502203774/2122668836</string>
+    <string name="txt_network_error_message">Network not available, Please check internet connection.</string>
 </resources>

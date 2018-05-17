@@ -27,14 +27,5 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token",refreshedToken);
         editor.apply();
-
-        // If you want to send messages to this application instan  ce or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
-        Toast.makeText(getApplicationContext(),refreshedToken,Toast.LENGTH_SHORT).show();
-        sendRegistrationToServer(refreshedToken);
-    }
-
-    private void sendRegistrationToServer(String refreshedToken) {
     }
 }

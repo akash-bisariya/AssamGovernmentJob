@@ -3,7 +3,8 @@ package com.assamgovernmentjob.home
 /**
  * Created by akash bisariya on 11-05-2018.
  */
-class HomePresenterImpl(var homeView: IHomeView?,var homeInteractor: IHomeInteracter) : IHomePresenter,IHomeInteracter.OnFinishedListener{
+class HomePresenterImpl(var homeView: IHomeView?) : IHomePresenter{
+    private val mHomeInteractor:IHomeInteracter = HomeInteracterImpl(this)
     override fun onResultFail(strError: String) {
         homeView!!.hideProgress()
         homeView!!.getDataFailed()
@@ -17,14 +18,14 @@ class HomePresenterImpl(var homeView: IHomeView?,var homeInteractor: IHomeIntera
     override fun getHomeCategoryData(category: Int) {
         homeView.let {
             homeView!!.showProgress()
-            homeInteractor.requestDataAPI(this,category)
+            mHomeInteractor.requestDataAPI(category,"","")
         }
     }
 
-    override fun getHomeData() {
+    override fun getHomeData(deviceId:String,token:String) {
         homeView.let {
             homeView!!.showProgress()
-            homeInteractor.requestDataAPI(this,0)
+            mHomeInteractor.requestDataAPI(0,deviceId,token)
         }
     }
 

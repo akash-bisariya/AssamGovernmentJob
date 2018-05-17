@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -21,7 +22,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         String message="";
-        Toast.makeText(this,"push get",Toast.LENGTH_SHORT).show();
+        Log.d("this","push get");
         if(!remoteMessage.getData().isEmpty()) {
             try {
                 JSONObject js = new JSONObject(remoteMessage.getData().get("payload"));
@@ -30,7 +31,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 e.printStackTrace();
             }
             //Calling method to generate notification
-//            sendNotification(message);
+            sendNotification(message);
         }
+    }
+
+    private void sendNotification(String message) {
+
     }
 }

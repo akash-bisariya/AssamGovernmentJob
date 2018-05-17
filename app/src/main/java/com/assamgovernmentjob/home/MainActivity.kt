@@ -9,40 +9,62 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.assamgovernmentjob.R
 import com.assamgovernmentjob.constants.AppConstants
+import com.assamgovernmentjob.utils.Utils
 import com.assamgovernmentjob.webPage.WebActivity
+import com.google.android.gms.ads.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import android.provider.Settings.Secure
-
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IHomeView, IOnRecycleItemClick {
-    lateinit var categoryModelData: CategoryModel
-    lateinit var homeModelData: HomeModel
+    private var categoryModelData: CategoryModel? = null
+    private var homeModelData: HomeModel? = null
+    private lateinit var mInterstitialAd: InterstitialAd
+
     override fun onRecycleItemClick(view: View?, position: Int, isCategory: Boolean) {
-        val intent = Intent(this@MainActivity, WebActivity::class.java)
-        if (isCategory) {
-            intent.putExtra("url", categoryModelData.userData.catData.post_content[position].href)
-            intent.putExtra("text", categoryModelData.userData.catData.post_content[position].str)
+        if (mInterstitialAd.isLoaded) {
+            mInterstitialAd.show()
         } else {
-            intent.putExtra("url", homeModelData.homeData.links[position].href)
-            intent.putExtra("text", homeModelData.homeData.links[position].str)
+            Log.d("TAG", "The interstitial wasn't loaded yet.")
+            getToWepPage(position, isCategory)
         }
-        startActivity(intent)
+
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdClicked() {
+                super.onAdClicked()
+            }
+
+            override fun onAdFailedToLoad(p0: Int) {
+                super.onAdFailedToLoad(p0)
+            }
+
+            override fun onAdClosed() {
+                super.onAdClosed()
+                getToWepPage(position, isCategory)
+            }
+
+            override fun onAdOpened() {
+                super.onAdOpened()
+            }
+        }
     }
 
-    private val homePresenterImpl = HomePresenterImpl(this, HomeInteracterImpl())
+    private val homePresenterImpl:IHomePresenter = HomePresenterImpl(this)
+
     override fun showProgress() {
         pb_progress.visibility = View.VISIBLE
     }
 
     override fun hideProgress() {
         pb_progress.visibility = View.GONE
+        btn_retry_home.visibility = View.GONE
     }
 
     override fun setHomeData(homeModel: HomeModel?) {
@@ -50,6 +72,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         pb_progress.visibility = View.GONE
         rv_home.layoutManager = LinearLayoutManager(this)
         rv_home.adapter = HomeRecyclerAdapter(this, homeModel, this)
+    }
+
+    fun getToWepPage(position: Int, isCategory: Boolean) {
+        val intent = Intent(this@MainActivity, WebActivity::class.java)
+        if (isCategory) {
+            intent.putExtra("url", categoryModelData!!.userData.catData.post_content[position].href)
+            intent.putExtra("text", categoryModelData!!.userData.catData.post_content[position].str)
+        } else {
+            intent.putExtra("url", homeModelData!!.homeData.links[position].href)
+            intent.putExtra("text", homeModelData!!.homeData.links[position].str)
+        }
+        startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Utils.isOnline(this@MainActivity)) {
+            btn_retry_home.visibility = View.GONE
+        } else {
+            if (categoryModelData == null && homeModelData ==null) {
+                btn_retry_home.visibility = View.VISIBLE
+                Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
+            } else {
+                btn_retry_home.visibility = View.GONE
+            }
+        }
     }
 
     override fun setHomeData(categoryModel: CategoryModel?) {
@@ -61,11 +109,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun getDataFailed() {
         pb_progress.visibility = View.GONE
+        if (categoryModelData == null || homeModelData ==null)
+        btn_retry_home.visibility = View.VISIBLE
+        Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        MobileAds.initialize(this, getString(R.string.admob_app_id))
+        val adRequest = AdRequest.Builder().build()
+        adView_home_activity.loadAd(adRequest)
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = getString(R.string.txt_interstitial_ad_id)
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Home"
         val toggle = ActionBarDrawerToggle(
@@ -79,8 +136,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val editor = sharedPreferences.edit()
         editor.putString("deviceId", androidId)
         editor.apply()
-
-
+        btn_retry_home.setOnClickListener({
+            if (Utils.isOnline(this)) {
+                onNavigationItemSelected(nav_view.menu.getItem(0))
+                btn_retry_home.visibility = View.GONE
+            } else {
+                Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     override fun onBackPressed() {
@@ -95,7 +158,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                homePresenterImpl.getHomeCategoryData(0)
+                homePresenterImpl.getHomeData(getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE).getString("deviceId", ""), getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE).getString("token", ""))
                 supportActionBar?.title = item.title
                 item.isChecked = true
             }
@@ -135,7 +198,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 item.isChecked = true
             }
         }
-
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }

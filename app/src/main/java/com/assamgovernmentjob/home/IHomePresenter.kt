@@ -5,6 +5,9 @@ package com.assamgovernmentjob.home
  */
 interface IHomePresenter {
     fun getHomeCategoryData(category: Int)
-    fun getHomeData()
+    fun getHomeData(deviceId:String,token:String)
     fun onDestroy()
+    fun onResultSuccess(categoryModel: CategoryModel?)
+    fun onResultSuccess(homeModel: HomeModel?)
+    fun onResultFail(strError: String)
 }

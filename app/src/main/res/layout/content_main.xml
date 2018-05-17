@@ -9,10 +9,12 @@
     tools:showIn="@layout/app_bar_main">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_home"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:padding="@dimen/s_10dp"
-        android:id="@+id/rv_home"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/adView_home_activity"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
@@ -22,5 +24,30 @@
         android:background="@android:color/white"
         android:visibility="gone"
         android:id="@+id/pb_progress"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:padding="@dimen/s_10dp"
+        android:layout_margin="@dimen/s_margin_20dp"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        android:background="@android:color/holo_blue_dark"
+        android:text="@string/txt_retry"
+        app:layout_constraintTop_toBottomOf="@id/web_toolbar"
+        android:id="@+id/btn_retry_home"/>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView_home_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:adSize="BANNER"
+        android:background="@color/black_overlay"
+        ads:adUnitId="@string/txt_banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
 
 </android.support.constraint.ConstraintLayout>
