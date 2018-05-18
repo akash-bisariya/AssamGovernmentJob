@@ -21,17 +21,16 @@ import java.util.logging.Logger
  * Created by akash bisariya on 11-05-2018.
  */
 class HomeInteracterImpl(val presenter: HomePresenterImpl) : IHomeInteracter {
-    override fun requestDataAPI(category: Int,deviceId:String,token:String) {
+    override fun requestDataAPI(category: Int, deviceId: String, token: String) {
         val retrofit: Retrofit = ApiClient.getClient()
         val arrayMap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) ArrayMap<String, String>() else HashMap<String, String>()
-        if(category==0) {
+        if (category == 0) {
             arrayMap["data"] = "all"
-            arrayMap["DeviceToken"]=token
-            arrayMap["DeviceId"]=deviceId
-        }
-        else arrayMap["category_id"] = category.toString()
+            arrayMap["DeviceToken"] = token
+            arrayMap["DeviceId"] = deviceId
+        } else arrayMap["category_id"] = category.toString()
         arrayMap["key"] = Service_Key
-        if(category!=0) {
+        if (category != 0) {
             val response = retrofit.create(ApiService::class.java).getCategoryLink(arrayMap)
             launch {
                 launch(UI) {
@@ -46,9 +45,7 @@ class HomeInteracterImpl(val presenter: HomePresenterImpl) : IHomeInteracter {
                     })
                 }
             }
-        }
-        else
-        {
+        } else {
             val response = retrofit.create(ApiService::class.java).getHomeData(arrayMap)
             launch {
                 launch(UI) {

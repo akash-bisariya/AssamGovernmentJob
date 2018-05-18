@@ -1,5 +1,9 @@
 package com.assamgovernmentjob.home
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
+import android.arch.paging.PagedList
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +19,8 @@ import android.view.View
 import android.widget.Toast
 import com.assamgovernmentjob.R
 import com.assamgovernmentjob.constants.AppConstants
+import com.assamgovernmentjob.home.pagingComponents.HomePagedAdapter
+import com.assamgovernmentjob.home.pagingComponents.HomeViewModel
 import com.assamgovernmentjob.utils.Utils
 import com.assamgovernmentjob.webPage.WebActivity
 import com.google.android.gms.ads.*
@@ -27,6 +33,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var categoryModelData: CategoryModel? = null
     private var homeModelData: HomeModel? = null
     private lateinit var mInterstitialAd: InterstitialAd
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var userAdapter: HomePagedAdapter
 
     override fun onRecycleItemClick(view: View?, position: Int, isCategory: Boolean) {
         if (mInterstitialAd.isLoaded) {
@@ -130,7 +138,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
-        onNavigationItemSelected(nav_view.menu.getItem(0))
+//        onNavigationItemSelected(nav_view.menu.getItem(0))
         val androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         val sharedPreferences = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -144,6 +152,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
             }
         })
+
+        homeViewModel = ViewModelProviders.of(this@MainActivity).get(HomeViewModel::class.java)
+        initAdapter()
     }
 
     override fun onBackPressed() {
@@ -152,6 +163,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             super.onBackPressed()
         }
+    }
+
+    fun initAdapter()
+    {
+        rv_home.layoutManager = LinearLayoutManager(this)
+        userAdapter = HomePagedAdapter()
+        rv_home.adapter = userAdapter
+        homeViewModel.homeDataList.observe(this, Observer<PagedList<Link>> { userAdapter.submitList(it) })
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
