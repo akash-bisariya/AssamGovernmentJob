@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.assamgovernmentjob.R
 import com.assamgovernmentjob.home.HomeData
+import com.assamgovernmentjob.home.IOnRecycleItemClick
 import com.assamgovernmentjob.home.Link
 import kotlinx.android.synthetic.main.home_row_layout.view.*
 
@@ -16,24 +17,29 @@ import kotlinx.android.synthetic.main.home_row_layout.view.*
  * Created by akash
  * on 18/5/18.
  */
-class HomePagedAdapter  : PagedListAdapter<Link, HomePagedAdapter.HomeViewHolder>(DIFF_CALLBACK) {
+class HomePagedAdapter(private val onItemClick: IOnRecycleItemClick)  : PagedListAdapter<Link, HomePagedAdapter.HomeViewHolder>(DIFF_CALLBACK) {
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         holder.bindTo(getItem(position))
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        return HomeViewHolder.create(parent)
+        return HomeViewHolder.create(parent,onItemClick)
     }
 
-    class HomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class HomeViewHolder(private var view: View, var onItemClick: IOnRecycleItemClick) : RecyclerView.ViewHolder(view),View.OnClickListener {
+        override fun onClick(p0: View?) {
+            onItemClick.onRecycleItemClick(view , adapterPosition,false)
+        }
+
         fun bindTo(link: Link?) {
             itemView.tv_url.text = link!!.str
+            itemView.setOnClickListener(this)
         }
 
         companion object {
-            fun create(parent: ViewGroup): HomeViewHolder {
+            fun create(parent: ViewGroup, onItemClick: IOnRecycleItemClick): HomeViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater.inflate(R.layout.home_row_layout, parent, false)
-                return HomeViewHolder(view)
+                return HomeViewHolder(view,onItemClick )
             }
         }
 

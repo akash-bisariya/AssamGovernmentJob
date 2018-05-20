@@ -18,11 +18,12 @@ class HomeCategoryRecyclerAdapter(private val context: Context, private val cate
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.home_row_layout, parent, false)
+        (view.findViewById(R.id.tv_date) as TextView).visibility = View.VISIBLE
         return ViewHolder(view, onItemClick)
     }
 
     override fun getItemCount(): Int {
-        return if (categoryModel!!.userData.catData.post_content.size > 0) categoryModel.userData.catData.post_content.size else 0
+        return if (categoryModel!!.userData.catData.post_content.isNotEmpty()) categoryModel.userData.catData.post_content.size else 0
     }
 
     class ViewHolder(itemView: View?, private var onItemClick: IOnRecycleItemClick) : RecyclerView.ViewHolder(itemView), View.OnClickListener {

@@ -18,7 +18,6 @@ class HomeRecyclerAdapter(private val context: Context, private val homeModel: H
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.home_row_layout, parent, false)
-        (view.findViewById(R.id.tv_date) as TextView).visibility = View.GONE
         return ViewHolder(view, onItemClick)
     }
 
@@ -28,7 +27,6 @@ class HomeRecyclerAdapter(private val context: Context, private val homeModel: H
 
     class ViewHolder(itemView: View?, private var onItemClick: IOnRecycleItemClick) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         private val tvUrl = itemView!!.findViewById(R.id.tv_url) as TextView
-//        private val tvDate = itemView!!.findViewById(R.id.tv_date) as TextView
         override fun onClick(view: View?) {
             onItemClick.onRecycleItemClick(view, adapterPosition,false)
         }

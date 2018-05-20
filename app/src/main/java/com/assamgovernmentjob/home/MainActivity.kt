@@ -1,5 +1,6 @@
 package com.assamgovernmentjob.home
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
@@ -7,6 +8,7 @@ import android.arch.paging.PagedList
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -21,6 +23,7 @@ import com.assamgovernmentjob.R
 import com.assamgovernmentjob.constants.AppConstants
 import com.assamgovernmentjob.home.pagingComponents.HomePagedAdapter
 import com.assamgovernmentjob.home.pagingComponents.HomeViewModel
+import com.assamgovernmentjob.home.pagingComponents.ViewModelFactory
 import com.assamgovernmentjob.utils.Utils
 import com.assamgovernmentjob.webPage.WebActivity
 import com.google.android.gms.ads.*
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var userAdapter: HomePagedAdapter
 
+    @SuppressLint("LogNotTimber")
     override fun onRecycleItemClick(view: View?, position: Int, isCategory: Boolean) {
         if (mInterstitialAd.isLoaded) {
             mInterstitialAd.show()
@@ -64,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private val homePresenterImpl:IHomePresenter = HomePresenterImpl(this)
+    private val homePresenterImpl: IHomePresenter = HomePresenterImpl(this)
 
     override fun showProgress() {
         pb_progress.visibility = View.VISIBLE
@@ -88,8 +92,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             intent.putExtra("url", categoryModelData!!.userData.catData.post_content[position].href)
             intent.putExtra("text", categoryModelData!!.userData.catData.post_content[position].str)
         } else {
-            intent.putExtra("url", homeModelData!!.homeData.links[position].href)
-            intent.putExtra("text", homeModelData!!.homeData.links[position].str)
+            intent.putExtra("url", userAdapter.currentList!![position]?.href)
+            intent.putExtra("text", userAdapter.currentList!![position]?.str)
         }
         startActivity(intent)
     }
@@ -99,7 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (Utils.isOnline(this@MainActivity)) {
             btn_retry_home.visibility = View.GONE
         } else {
-            if (categoryModelData == null && homeModelData ==null) {
+            if (categoryModelData == null && userAdapter.currentList == null) {
                 btn_retry_home.visibility = View.VISIBLE
                 Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
             } else {
@@ -117,8 +121,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun getDataFailed() {
         pb_progress.visibility = View.GONE
-        if (categoryModelData == null || homeModelData ==null)
-        btn_retry_home.visibility = View.VISIBLE
+        if (categoryModelData == null && userAdapter.currentList == null)
+            btn_retry_home.visibility = View.VISIBLE
         Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
     }
 
@@ -137,13 +141,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-        nav_view.setNavigationItemSelectedListener(this)
-//        onNavigationItemSelected(nav_view.menu.getItem(0))
         val androidId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         val sharedPreferences = getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("deviceId", androidId)
         editor.apply()
+        nav_view.setNavigationItemSelectedListener(this)
+        homeViewModel = ViewModelProviders.of(this@MainActivity, ViewModelFactory(this.application)).get(HomeViewModel::class.java)
+        initAdapter()
+        pb_progress.visibility = View.VISIBLE
+        onNavigationItemSelected(nav_view.menu.getItem(0))
         btn_retry_home.setOnClickListener({
             if (Utils.isOnline(this)) {
                 onNavigationItemSelected(nav_view.menu.getItem(0))
@@ -152,9 +159,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
             }
         })
-
-        homeViewModel = ViewModelProviders.of(this@MainActivity).get(HomeViewModel::class.java)
-        initAdapter()
     }
 
     override fun onBackPressed() {
@@ -165,12 +169,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun initAdapter()
-    {
+    private fun initAdapter() {
         rv_home.layoutManager = LinearLayoutManager(this)
-        userAdapter = HomePagedAdapter()
+        userAdapter = HomePagedAdapter(this)
         rv_home.adapter = userAdapter
-        homeViewModel.homeDataList.observe(this, Observer<PagedList<Link>> { userAdapter.submitList(it) })
+        homeViewModel.homeDataList.observe(this, Observer<PagedList<Link>> {
+            userAdapter.submitList(it)
+            Handler().postDelayed({
+                pb_progress.visibility = View.GONE
+            }, 500)
+
+        })
 
     }
 
@@ -178,7 +187,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                homePresenterImpl.getHomeData(getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE).getString("deviceId", ""), getSharedPreferences(resources.getString(R.string.app_name), Context.MODE_PRIVATE).getString("token", ""))
+                pb_progress.visibility = View.VISIBLE
+                initAdapter()
+                if(homeViewModel.homeDataList.value!=null && Utils.isOnline(this))
+                    homeViewModel.refresh()
                 supportActionBar?.title = item.title
                 item.isChecked = true
             }
