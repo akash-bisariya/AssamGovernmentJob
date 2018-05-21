@@ -23,31 +23,30 @@ import retrofit2.Retrofit
  */
 class HomeDataSource(val mApplication: Application) : PageKeyedDataSource<Long, Link>() {
     private var homeList: List<Link>? = null
-    private var totalPage=0
-    private var currentPage:Long=1
+    private var totalPage = 0
+    private var currentPage: Long = 1
     override fun loadBefore(params: LoadParams<Long>, callback: LoadCallback<Long, Link>) {
     }
 
     override fun loadInitial(params: LoadInitialParams<Long>, callback: LoadInitialCallback<Long, Link>) {
-//        homeView!!.showProgress()
         val retrofit: Retrofit = ApiClient.getClient()
         val arrayMap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) ArrayMap<String, String>() else HashMap<String, String>()
         arrayMap["data"] = "all"
-        arrayMap["page"]="1"
-        arrayMap["DeviceToken"] =mApplication.getSharedPreferences(mApplication.resources.getString(R.string.app_name), Context.MODE_PRIVATE).getString("token","")
-        arrayMap["DeviceId"] = mApplication.getSharedPreferences(mApplication.resources.getString(R.string.app_name), Context.MODE_PRIVATE).getString("deviceId","")
+        arrayMap["page"] = "1"
+        arrayMap["DeviceToken"] = mApplication.getSharedPreferences(mApplication.resources.getString(R.string.app_name), Context.MODE_PRIVATE).getString("token", "")
+        arrayMap["DeviceId"] = mApplication.getSharedPreferences(mApplication.resources.getString(R.string.app_name), Context.MODE_PRIVATE).getString("deviceId", "")
         arrayMap["key"] = AppConstants.Service_Key
         val response = retrofit.create(ApiService::class.java).getHomeData(arrayMap)
         launch {
             response.enqueue(object : Callback<HomeModel> {
                 override fun onFailure(call: Call<HomeModel>?, t: Throwable?) {
-                    Log.d("assamGovernMentJobs","Network not available, Please check internet connection")
+                    Log.d("assamGovernMentJobs", "Network not available, Please check internet connection")
                 }
+
                 override fun onResponse(call: Call<HomeModel>?, response: Response<HomeModel>?) {
-                    homeList= response!!.body()!!.homeData.links
-                    totalPage=response.body()!!.homeData.totalCount.toInt()
-                    callback.onResult(homeList!!,1, currentPage++)
-//                    homeView!!.hideProgress()
+                    homeList = response!!.body()!!.homeData.links
+                    totalPage = response.body()!!.homeData.totalCount.toInt()
+                    callback.onResult(homeList!!, 1, currentPage++)
                 }
 
             })
@@ -56,10 +55,9 @@ class HomeDataSource(val mApplication: Application) : PageKeyedDataSource<Long, 
 
     override fun loadAfter(params: LoadParams<Long>, callback: LoadCallback<Long, Link>) {
         val retrofit: Retrofit = ApiClient.getClient()
-//        homeView!!.showProgress()
         val arrayMap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) ArrayMap<String, String>() else HashMap<String, String>()
         arrayMap["data"] = "all"
-        arrayMap["page"]=currentPage.toString()
+        arrayMap["page"] = currentPage.toString()
         arrayMap["DeviceToken"] = ""
         arrayMap["DeviceId"] = ""
         arrayMap["key"] = AppConstants.Service_Key
@@ -67,13 +65,13 @@ class HomeDataSource(val mApplication: Application) : PageKeyedDataSource<Long, 
         launch {
             response.enqueue(object : Callback<HomeModel> {
                 override fun onFailure(call: Call<HomeModel>?, t: Throwable?) {
-                    Log.d("assamGovernMentJobs","Network not available, Please check internet connection")
+                    Log.d("assamGovernMentJobs", "Network not available, Please check internet connection")
                 }
+
                 override fun onResponse(call: Call<HomeModel>?, response: Response<HomeModel>?) {
-                    homeList= response!!.body()!!.homeData.links
-//                    homeView!!.hideProgress()
-                    if(currentPage>totalPage) currentPage=0
-                    callback.onResult(homeList!!,if(currentPage>totalPage) currentPage else currentPage++)
+                    homeList = response!!.body()!!.homeData.links
+                    if (currentPage > totalPage) currentPage = 0
+                    callback.onResult(homeList!!, if (currentPage > totalPage) currentPage else currentPage++)
                 }
 
             })

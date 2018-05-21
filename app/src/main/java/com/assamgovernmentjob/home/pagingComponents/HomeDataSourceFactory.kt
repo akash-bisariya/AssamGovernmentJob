@@ -10,7 +10,7 @@ import com.assamgovernmentjob.home.Link
  * Created by akash
  * on 18/5/18.
  */
-class HomeDataSourceFactory(val mApplication: Application) :DataSource.Factory<Long, Link>{
+class HomeDataSourceFactory(val mApplication: Application) : DataSource.Factory<Long, Link> {
     val usersDataSourceLiveData = MutableLiveData<HomeDataSource>()
 
     override fun create(): DataSource<Long, Link> {

@@ -119,6 +119,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         rv_home.adapter = HomeCategoryRecyclerAdapter(this, categoryModel, this)
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.d("onNewIntent", "onNewIntent")
+        homeViewModel.refresh()
+    }
+
     override fun getDataFailed() {
         pb_progress.visibility = View.GONE
         if (categoryModelData == null && userAdapter.currentList == null)
@@ -189,7 +195,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 pb_progress.visibility = View.VISIBLE
                 initAdapter()
-                if(homeViewModel.homeDataList.value!=null && Utils.isOnline(this))
+                if (homeViewModel.homeDataList.value != null && Utils.isOnline(this))
                     homeViewModel.refresh()
                 supportActionBar?.title = item.title
                 item.isChecked = true
