@@ -1,4 +1,5 @@
 package com.assamgovernmentjob.webPage
+
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,7 +22,6 @@ class WebActivity : AppCompatActivity() {
         MobileAds.initialize(this, getString(R.string.admob_app_id))
         val adRequest = AdRequest.Builder().build()
         adView_web_activity.loadAd(adRequest)
-//        iv_back = web_toolbar.findViewById(R.id.iv_back)
         web_toolbar.findViewById<TextView>(R.id.tv_web_toolbar_title).text = intent.getStringExtra("text")
         pb_progress_web.visibility = View.VISIBLE
         web_view.settings.builtInZoomControls = true
@@ -29,7 +29,7 @@ class WebActivity : AppCompatActivity() {
 
         btn_retry.setOnClickListener {
             if (Utils.isOnline(this@WebActivity)) {
-                btn_retry.visibility = View.GONE
+                rl_retry.visibility = View.GONE
                 pb_progress_web.visibility = View.VISIBLE
                 web_view.loadUrl(intent.getStringExtra("url"))
             } else {
@@ -37,7 +37,6 @@ class WebActivity : AppCompatActivity() {
                 pb_progress_web.visibility = View.GONE
             }
         }
-
         iv_back.setOnClickListener({
             onBackPressed()
         })
@@ -58,7 +57,7 @@ class WebActivity : AppCompatActivity() {
         else {
             Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
             pb_progress_web.visibility = View.GONE
-            btn_retry.visibility = View.VISIBLE
+            rl_retry.visibility = View.VISIBLE
         }
     }
 }

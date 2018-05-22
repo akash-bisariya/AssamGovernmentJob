@@ -30,6 +30,7 @@ import com.google.android.gms.ads.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import okhttp3.internal.Util
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IHomeView, IOnRecycleItemClick {
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun hideProgress() {
         pb_progress.visibility = View.GONE
-        btn_retry_home.visibility = View.GONE
+        rl_retry.visibility = View.GONE
     }
 
     override fun setHomeData(homeModel: HomeModel?) {
@@ -98,16 +99,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         startActivity(intent)
     }
 
+
     override fun onResume() {
         super.onResume()
         if (Utils.isOnline(this@MainActivity)) {
-            btn_retry_home.visibility = View.GONE
+            rl_retry.visibility = View.GONE
         } else {
             if (categoryModelData == null && userAdapter.currentList == null) {
-                btn_retry_home.visibility = View.VISIBLE
+                rl_retry.visibility = View.VISIBLE
                 Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
             } else {
-                btn_retry_home.visibility = View.GONE
+                rl_retry.visibility = View.GONE
             }
         }
     }
@@ -128,7 +130,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun getDataFailed() {
         pb_progress.visibility = View.GONE
         if (categoryModelData == null && userAdapter.currentList == null)
-            btn_retry_home.visibility = View.VISIBLE
+            rl_retry.visibility = View.VISIBLE
         Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
     }
 
@@ -155,12 +157,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
         homeViewModel = ViewModelProviders.of(this@MainActivity, ViewModelFactory(this.application)).get(HomeViewModel::class.java)
         initAdapter()
+        if(Utils.isOnline(this))
         pb_progress.visibility = View.VISIBLE
         onNavigationItemSelected(nav_view.menu.getItem(0))
         btn_retry_home.setOnClickListener({
             if (Utils.isOnline(this)) {
                 onNavigationItemSelected(nav_view.menu.getItem(0))
-                btn_retry_home.visibility = View.GONE
+                rl_retry.visibility = View.GONE
             } else {
                 Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
             }
@@ -193,7 +196,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
-                pb_progress.visibility = View.VISIBLE
+                if (Utils.isOnline(this))
+                    pb_progress.visibility = View.VISIBLE
                 initAdapter()
                 if (homeViewModel.homeDataList.value != null && Utils.isOnline(this))
                     homeViewModel.refresh()
@@ -234,6 +238,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 homePresenterImpl.getHomeCategoryData(AppConstants.Important)
                 supportActionBar?.title = item.title
                 item.isChecked = true
+            }
+            R.id.nav_privacy_policy, R.id.nav_about_us -> {
+                item.isChecked = true
+                val intent = Intent(this@MainActivity, WebActivity::class.java)
+                if (item.itemId == R.id.nav_about_us) {
+                    intent.putExtra("url", getString(R.string.txt_about_us_url))
+                    intent.putExtra("text", R.string.txt_about_us)
+                } else {
+                    intent.putExtra("url", getString(R.string.txt_privacy_url))
+                    intent.putExtra("text", R.string.txt_privacy_policy)
+                }
+                startActivity(intent)
+            }
+            R.id.nav_share ->
+            {
+                val share = Intent(Intent.ACTION_SEND)
+                share.type = "text/plain"
+                share.putExtra(Intent.EXTRA_TEXT, getString(R.string.txt_share_text))
+                startActivity(Intent.createChooser(share, getString(R.string.txt_share_title)))
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)

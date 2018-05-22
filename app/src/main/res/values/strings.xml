@@ -27,4 +27,10 @@
     <!--<string name="txt_interstitial_ad_id">ca-app-pub-5336790697377010/8366243323</string>-->
     <string name="txt_interstitial_ad_id">ca-app-pub-3940256099942544/1033173712</string>
     <string name="txt_network_error_message">Network not available, Please check internet connection.</string>
+    <string name="txt_about_us">About Us</string>
+    <string name="txt_privacy_policy">Privacy Policy</string>
+    <string name="txt_share_text">I\'m being sent!!</string>
+    <string name="txt_share_title">Share Application</string>
+    <string name="txt_about_us_url">https://assamgovernmentjob.com/about-us/</string>
+    <string name="txt_privacy_url">https://assamgovernmentjob.com/privacy-policy/</string>
 </resources>

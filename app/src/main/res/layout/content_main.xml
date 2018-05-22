@@ -25,19 +25,33 @@
         android:visibility="gone"
         android:id="@+id/pb_progress"/>
 
-    <Button
+    <RelativeLayout
+        android:id="@+id/rl_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:padding="@dimen/s_10dp"
-        android:layout_margin="@dimen/s_margin_20dp"
         app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
-        android:background="@android:color/holo_blue_dark"
-        android:text="@string/txt_retry"
-        app:layout_constraintTop_toBottomOf="@id/web_toolbar"
-        android:id="@+id/btn_retry_home"/>
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/web_toolbar">
+
+        <Button
+            android:id="@+id/btn_retry_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/s_margin_20dp"
+            android:layout_marginRight="@dimen/s_margin_20dp"
+            android:layout_marginTop="@dimen/s_margin_20dp"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="@dimen/s_10dp"
+            android:text="@string/txt_retry" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_retry_home"
+            android:text="@string/txt_network_error_message" />
+    </RelativeLayout>
 
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
