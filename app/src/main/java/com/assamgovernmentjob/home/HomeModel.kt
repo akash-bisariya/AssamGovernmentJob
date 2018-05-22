@@ -23,5 +23,6 @@ data class HomeData(
 
 data class Link(
         val str: String,
-        val href: String
+        val href: String,
+        val date: String
 )

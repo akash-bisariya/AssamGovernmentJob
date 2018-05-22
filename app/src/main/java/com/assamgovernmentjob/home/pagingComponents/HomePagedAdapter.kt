@@ -34,6 +34,7 @@ class HomePagedAdapter(private val onItemClick: IOnRecycleItemClick) : PagedList
         fun bindTo(link: Link?) {
             itemView.tv_url.text = link!!.str
             itemView.setOnClickListener(this)
+            itemView.tv_date.text = link.date
         }
 
         companion object {

@@ -186,7 +186,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             userAdapter.submitList(it)
             Handler().postDelayed({
                 pb_progress.visibility = View.GONE
-            }, 500)
+            }, 1000)
 
         })
 

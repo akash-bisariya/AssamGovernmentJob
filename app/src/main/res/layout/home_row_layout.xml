@@ -50,7 +50,7 @@
             android:paddingLeft="@dimen/s_10dp"
             android:drawablePadding="@dimen/s_5dp"
             android:paddingRight="@dimen/s_10dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintLeft_toRightOf="@id/iv_image"
             app:layout_constraintTop_toBottomOf="@id/tv_url"
             android:drawableStart="@drawable/ic_date_range_grey_600_18dp" />

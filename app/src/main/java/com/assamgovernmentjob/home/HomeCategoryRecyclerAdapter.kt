@@ -18,7 +18,6 @@ class HomeCategoryRecyclerAdapter(private val context: Context, private val cate
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.home_row_layout, parent, false)
-        (view.findViewById(R.id.tv_date) as TextView).visibility = View.VISIBLE
         return ViewHolder(view, onItemClick)
     }
 
