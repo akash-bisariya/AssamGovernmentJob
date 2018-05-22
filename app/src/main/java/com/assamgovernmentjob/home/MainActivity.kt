@@ -157,8 +157,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
         homeViewModel = ViewModelProviders.of(this@MainActivity, ViewModelFactory(this.application)).get(HomeViewModel::class.java)
         initAdapter()
-        if(Utils.isOnline(this))
-        pb_progress.visibility = View.VISIBLE
+        if (Utils.isOnline(this))
+            pb_progress.visibility = View.VISIBLE
         onNavigationItemSelected(nav_view.menu.getItem(0))
         btn_retry_home.setOnClickListener({
             if (Utils.isOnline(this)) {
@@ -244,15 +244,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = Intent(this@MainActivity, WebActivity::class.java)
                 if (item.itemId == R.id.nav_about_us) {
                     intent.putExtra("url", getString(R.string.txt_about_us_url))
-                    intent.putExtra("text", R.string.txt_about_us)
+                    intent.putExtra("text", getString(R.string.txt_about_us))
                 } else {
                     intent.putExtra("url", getString(R.string.txt_privacy_url))
-                    intent.putExtra("text", R.string.txt_privacy_policy)
+                    intent.putExtra("text", getString(R.string.txt_privacy_policy))
                 }
                 startActivity(intent)
             }
-            R.id.nav_share ->
-            {
+            R.id.nav_share -> {
                 val share = Intent(Intent.ACTION_SEND)
                 share.type = "text/plain"
                 share.putExtra(Intent.EXTRA_TEXT, getString(R.string.txt_share_text))

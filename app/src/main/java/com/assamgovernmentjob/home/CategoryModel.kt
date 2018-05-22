@@ -9,15 +9,15 @@ import com.google.gson.annotations.SerializedName
 
 data class CategoryModel(
         @SerializedName("success")
-    val success: String,
+        val success: String,
         @SerializedName("userData")
-    val userData: UserData
+        val userData: UserData
 )
 
 data class UserData(
-    val Message: String,
-    val ResponseCode: String,
-    val catData: CatData
+        val Message: String,
+        val ResponseCode: String,
+        val catData: CatData
 )
 
 data class CatData(
@@ -37,6 +37,6 @@ data class CatData(
 )
 
 data class PostContent(
-    val str: String,
-    val href: String
+        val str: String,
+        val href: String
 )

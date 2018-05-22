@@ -30,10 +30,10 @@ class HomeCategoryRecyclerAdapter(private val context: Context, private val cate
         private val tvDate = itemView!!.findViewById(R.id.tv_date) as TextView
 
         override fun onClick(view: View?) {
-            onItemClick.onRecycleItemClick(view, adapterPosition,true)
+            onItemClick.onRecycleItemClick(view, adapterPosition, true)
         }
 
-        fun viewHolderBind( context: Context, categoryModel: CategoryModel, listener: IOnRecycleItemClick) {
+        fun viewHolderBind(context: Context, categoryModel: CategoryModel, listener: IOnRecycleItemClick) {
             onItemClick = listener
             tvUrl.text = categoryModel.userData.catData.post_content[adapterPosition].str
             tvDate.text = categoryModel.userData.catData.post_date

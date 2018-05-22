@@ -5,7 +5,6 @@ import android.app.Application
 import android.arch.lifecycle.ViewModelProvider
 
 
-
 /**
  * Created by akash bisariya on 21-05-2018.
  */
