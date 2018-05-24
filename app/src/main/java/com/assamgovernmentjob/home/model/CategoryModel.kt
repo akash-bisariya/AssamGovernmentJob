@@ -1,4 +1,4 @@
-package com.assamgovernmentjob.home
+package com.assamgovernmentjob.home.model
 
 import com.google.gson.annotations.SerializedName
 

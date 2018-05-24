@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.assamgovernmentjob.R
+import com.assamgovernmentjob.home.model.CategoryModel
+import com.assamgovernmentjob.utils.Utils
 
 /**
  * Created by akash bisariya on 13-02-2018.
@@ -36,7 +38,7 @@ class HomeCategoryRecyclerAdapter(private val context: Context, private val cate
         fun viewHolderBind(context: Context, categoryModel: CategoryModel, listener: IOnRecycleItemClick) {
             onItemClick = listener
             tvUrl.text = categoryModel.userData.catData.post_content[adapterPosition].str
-            tvDate.text = categoryModel.userData.catData.post_date
+            tvDate.text = Utils.formatDate(categoryModel.userData.catData.post_date)
             itemView.setOnClickListener(this)
         }
     }

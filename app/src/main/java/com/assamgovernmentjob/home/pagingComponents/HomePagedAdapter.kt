@@ -2,15 +2,14 @@ package com.assamgovernmentjob.home.pagingComponents
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.recyclerview.extensions.DiffCallback
-import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.assamgovernmentjob.R
-import com.assamgovernmentjob.home.HomeData
 import com.assamgovernmentjob.home.IOnRecycleItemClick
-import com.assamgovernmentjob.home.Link
+import com.assamgovernmentjob.home.model.Link
+import com.assamgovernmentjob.utils.Utils
 import kotlinx.android.synthetic.main.home_row_layout.view.*
 
 /**
@@ -34,7 +33,7 @@ class HomePagedAdapter(private val onItemClick: IOnRecycleItemClick) : PagedList
         fun bindTo(link: Link?) {
             itemView.tv_url.text = link!!.str
             itemView.setOnClickListener(this)
-            itemView.tv_date.text = link.date
+            itemView.tv_date.text = Utils.formatDate(link.date)
         }
 
         companion object {

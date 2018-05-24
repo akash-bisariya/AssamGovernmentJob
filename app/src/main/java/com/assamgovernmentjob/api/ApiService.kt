@@ -1,8 +1,7 @@
 package com.assamgovernmentjob.api
 
-import com.assamgovernmentjob.home.CategoryModel
-import com.assamgovernmentjob.home.HomeData
-import com.assamgovernmentjob.home.HomeModel
+import com.assamgovernmentjob.home.model.CategoryModel
+import com.assamgovernmentjob.home.model.HomeModel
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

@@ -1,5 +1,8 @@
 package com.assamgovernmentjob.home
 
+import com.assamgovernmentjob.home.model.CategoryModel
+import com.assamgovernmentjob.home.model.HomeModel
+
 /**
  * Created by akash bisariya on 10-05-2018.
  */

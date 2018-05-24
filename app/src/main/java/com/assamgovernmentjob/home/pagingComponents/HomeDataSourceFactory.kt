@@ -3,7 +3,7 @@ package com.assamgovernmentjob.home.pagingComponents
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.DataSource
-import com.assamgovernmentjob.home.Link
+import com.assamgovernmentjob.home.model.Link
 
 
 /**

@@ -29,7 +29,7 @@
     <string name="txt_network_error_message">Network not available, Please check internet connection.</string>
     <string name="txt_about_us">About Us</string>
     <string name="txt_privacy_policy">Privacy Policy</string>
-    <string name="txt_share_text">I\'m being sent!!</string>
+    <string name="txt_share_text">https://play.google.com/store/apps/details?id=com.assamgovernmentjob</string>
     <string name="txt_share_title">Share Application</string>
     <string name="txt_about_us_url">https://assamgovernmentjob.com/about-us/</string>
     <string name="txt_privacy_url">https://assamgovernmentjob.com/privacy-policy/</string>

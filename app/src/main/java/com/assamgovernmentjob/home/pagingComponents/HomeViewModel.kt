@@ -5,7 +5,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import com.assamgovernmentjob.home.Link
+import com.assamgovernmentjob.home.model.Link
 
 /**
  * Created by akash

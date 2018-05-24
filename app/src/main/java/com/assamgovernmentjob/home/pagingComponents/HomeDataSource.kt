@@ -10,7 +10,8 @@ import com.assamgovernmentjob.R
 import com.assamgovernmentjob.api.ApiClient
 import com.assamgovernmentjob.api.ApiService
 import com.assamgovernmentjob.constants.AppConstants
-import com.assamgovernmentjob.home.*
+import com.assamgovernmentjob.home.model.HomeModel
+import com.assamgovernmentjob.home.model.Link
 import kotlinx.coroutines.experimental.launch
 import retrofit2.Call
 import retrofit2.Callback

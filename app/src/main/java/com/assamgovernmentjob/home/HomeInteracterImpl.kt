@@ -1,21 +1,18 @@
 package com.assamgovernmentjob.home
 
-import android.content.SharedPreferences
 import android.os.Build
 import android.util.ArrayMap
-import android.util.Log
-import android.widget.Toast
 import com.assamgovernmentjob.api.ApiClient
 import com.assamgovernmentjob.api.ApiService
 import com.assamgovernmentjob.constants.AppConstants.Service_Key
+import com.assamgovernmentjob.home.model.CategoryModel
+import com.assamgovernmentjob.home.model.HomeModel
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.util.logging.Logger
 
 /**
  * Created by akash bisariya on 11-05-2018.

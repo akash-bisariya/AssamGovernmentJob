@@ -2,7 +2,6 @@ package com.assamgovernmentjob.home
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.content.Context
@@ -21,6 +20,9 @@ import android.view.View
 import android.widget.Toast
 import com.assamgovernmentjob.R
 import com.assamgovernmentjob.constants.AppConstants
+import com.assamgovernmentjob.home.model.CategoryModel
+import com.assamgovernmentjob.home.model.HomeModel
+import com.assamgovernmentjob.home.model.Link
 import com.assamgovernmentjob.home.pagingComponents.HomePagedAdapter
 import com.assamgovernmentjob.home.pagingComponents.HomeViewModel
 import com.assamgovernmentjob.home.pagingComponents.ViewModelFactory
@@ -30,12 +32,10 @@ import com.google.android.gms.ads.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import okhttp3.internal.Util
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, IHomeView, IOnRecycleItemClick {
     private var categoryModelData: CategoryModel? = null
-    private var homeModelData: HomeModel? = null
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var userAdapter: HomePagedAdapter
@@ -83,10 +83,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun setHomeData(homeModel: HomeModel?) {
-        homeModelData = homeModel!!
-        pb_progress.visibility = View.GONE
-        rv_home.layoutManager = LinearLayoutManager(this)
-        rv_home.adapter = HomeRecyclerAdapter(this, homeModel, this)
     }
 
     fun getToWepPage(position: Int, isCategory: Boolean) {
