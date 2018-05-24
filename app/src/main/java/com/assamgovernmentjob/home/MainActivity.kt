@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var userAdapter: HomePagedAdapter
+    private val homePresenterImpl: IHomePresenter = HomePresenterImpl(this)
 
     @SuppressLint("LogNotTimber")
     override fun onRecycleItemClick(view: View?, position: Int, isCategory: Boolean) {
@@ -46,30 +47,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             mInterstitialAd.show()
         } else {
             Log.d("TAG", "The interstitial wasn't loaded yet.")
+            mInterstitialAd.loadAd(AdRequest.Builder().build())
             getToWepPage(position, isCategory)
         }
 
         mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdClicked() {
-                super.onAdClicked()
-            }
-
-            override fun onAdFailedToLoad(p0: Int) {
-                super.onAdFailedToLoad(p0)
-            }
 
             override fun onAdClosed() {
                 super.onAdClosed()
                 getToWepPage(position, isCategory)
             }
-
-            override fun onAdOpened() {
-                super.onAdOpened()
-            }
         }
     }
-
-    private val homePresenterImpl: IHomePresenter = HomePresenterImpl(this)
 
     override fun showProgress() {
         pb_progress.visibility = View.VISIBLE
@@ -77,7 +66,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun hideProgress() {
         pb_progress.visibility = View.GONE
-        rl_retry.visibility = View.GONE
+        if (Utils.isOnline(this@MainActivity)) {
+            rl_retry.visibility = View.GONE
+        } else {
+            if (categoryModelData == null && userAdapter.currentList == null) {
+                rl_retry.visibility = View.VISIBLE
+                Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
+            } else {
+                if (userAdapter.currentList!!.size <= 0) {
+                    rl_retry.visibility = View.VISIBLE
+                    Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
+                } else
+                    rl_retry.visibility = View.GONE
+            }
+        }
     }
 
     override fun setHomeData(homeModel: HomeModel?) {
@@ -107,9 +109,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             if (categoryModelData == null && userAdapter.currentList == null) {
                 rl_retry.visibility = View.VISIBLE
-                Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
             } else {
-                rl_retry.visibility = View.GONE
+                if (userAdapter.currentList!!.size <= 0) {
+                    rl_retry.visibility = View.VISIBLE
+                } else
+                    rl_retry.visibility = View.GONE
             }
         }
     }
@@ -137,12 +141,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        MobileAds.initialize(this, getString(R.string.admob_app_id))
-        val adRequest = AdRequest.Builder().build()
-        adView_home_activity.loadAd(adRequest)
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = getString(R.string.txt_interstitial_ad_id)
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
+        initializeAds()
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Home"
         val toggle = ActionBarDrawerToggle(
@@ -157,9 +156,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
         homeViewModel = ViewModelProviders.of(this@MainActivity, ViewModelFactory(this.application)).get(HomeViewModel::class.java)
         initAdapter()
-        if (Utils.isOnline(this))
-            pb_progress.visibility = View.VISIBLE
         onNavigationItemSelected(nav_view.menu.getItem(0))
+        if (Utils.isOnline(this)) pb_progress.visibility = View.VISIBLE
         btn_retry_home.setOnClickListener({
             if (Utils.isOnline(this)) {
                 onNavigationItemSelected(nav_view.menu.getItem(0))
@@ -168,6 +166,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, getString(R.string.txt_network_error_message), Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun initializeAds() {
+        MobileAds.initialize(this, getString(R.string.admob_app_id))
+        val adRequest = AdRequest.Builder().build()
+        adView_home_activity.loadAd(adRequest)
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = getString(R.string.txt_interstitial_ad_id)
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
     }
 
     override fun onBackPressed() {
@@ -193,7 +200,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
                 if (Utils.isOnline(this))

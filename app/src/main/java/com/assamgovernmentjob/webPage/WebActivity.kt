@@ -26,7 +26,8 @@ class WebActivity : AppCompatActivity() {
         pb_progress_web.visibility = View.VISIBLE
         web_view.settings.builtInZoomControls = true
         web_view.settings.javaScriptEnabled = true
-
+        web_view.scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY;
+        web_view.isScrollbarFadingEnabled = false
         btn_retry.setOnClickListener {
             if (Utils.isOnline(this@WebActivity)) {
                 rl_retry.visibility = View.GONE
