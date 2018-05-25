@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#B71C1C</color>
     <color name="colorAccent">#FF8A80</color>
     <color name="color_link_text">#FF6E5C5A</color>
-    <color name="color_top">#FF478594</color>
-    <color name="color_bottom">#FFA3968D</color>
+    <color name="color_top_splash">#FF478594</color>
+    <color name="color_bottom_splash">#FFA3968D</color>
     <color name="black_overlay">#66000000</color>
 </resources>
